@@ -1,222 +1,148 @@
-# Fórum API
+# 📘 Fórum API
 
-Este projeto é uma API RESTful para um fórum de discussão, permitindo a criação, listagem, detalhamento, atualização e exclusão de tópicos. A segurança da API é implementada utilizando **JSON Web Tokens (JWT)** através do **Auth0**.
-
----
-
-## Funcionalidades
-
-A API oferece os seguintes endpoints para gerenciamento de tópicos:
-
-* **`POST /topicos`**: Cria um novo tópico no fórum.
-* **`GET /topicos`**: Lista todos os tópicos existentes, com suporte a paginação.
-* **`GET /topicos/{id}`**: Detalha um tópico específico pelo seu ID.
-* **`PUT /topicos/{id}`**: Atualiza as informações de um tópico existente.
-* **`DELETE /topicos/{id}`**: Exclui um tópico do fórum (exclusão lógica).
+Uma API RESTful para gerenciamento de tópicos em um fórum de discussão. Permite **criar**, **listar**, **detalhar**, **atualizar** e **excluir** tópicos, com segurança via **JWT** utilizando **Auth0**, além de funcionalidade para **exportação em CSV**.
 
 ---
 
-### Funcionalidades de Exportação (CSV)
+## ⚙️ Funcionalidades
 
-A API do Fórum oferece uma funcionalidade para exportar a lista completa de tópicos em formato CSV (Comma Separated Values), ideal para análises ou backup de dados.
+- `POST /topicos`: Cria um novo tópico.
+- `GET /topicos`: Lista todos os tópicos (com paginação).
+- `GET /topicos/{id}`: Detalha um tópico específico.
+- `PUT /topicos/{id}`: Atualiza um tópico.
+- `DELETE /topicos/{id}`: Exclusão lógica de um tópico.
 
-#### Endpoint de Exportação
+### 📤 Exportação de Tópicos (CSV)
 
-* **`GET /topicos/exportar/csv`**: Exporta todos os tópicos existentes para um arquivo CSV.
+- `GET /topicos/exportar/csv`: Exporta todos os tópicos para um arquivo `.csv`.
 
-    **Exemplo de Uso:**
+**Exemplo com cURL:**
 
-    Você pode acessar este endpoint diretamente no seu navegador ou via ferramentas como cURL, Postman, Insomnia. O download do arquivo será iniciado automaticamente.
+```bash
+curl -H "Authorization: Bearer SEU_TOKEN_JWT_AQUI" \
+     -o topicos_export.csv \
+     http://localhost:8080/topicos/exportar/csv
 
-    ```bash
-    curl -H "Authorization: Bearer SEU_TOKEN_JWT_AQUI" -o topicos_export.csv http://localhost:8080/topicos/exportar/csv
-    ```
+🔒 Este endpoint exige autenticação via Bearer Token JWT.
 
-    **Observações:**
+🔐 Segurança com JWT (Auth0)
+Todos os endpoints que alteram ou acessam dados sensíveis exigem token JWT válido:
 
-    * Este endpoint requer um **token JWT válido** no cabeçalho `Authorization` para garantir que apenas usuários autenticados possam realizar a exportação.
-    * O nome do arquivo CSV será gerado dinamicamente com base na data e hora da exportação (ex: `topicos_20250720_114505.csv`).
-    * Para grandes volumes de dados, o processo de exportação pode levar alguns instantes.
+Cabeçalho: Authorization: Bearer SEU_TOKEN_JWT_AQUI
 
----
+Como obter um token JWT:
+Crie uma conta e configure uma aplicação no Auth0.
 
-## Segurança
+Obtenha credenciais: Client ID, Client Secret, Domain, Audience.
 
-A segurança desta API é gerenciada pelo **Auth0**, utilizando tokens JWT para autenticação e autorização. Todas as requisições que modificam recursos (POST, PUT, DELETE) e o acesso a recursos específicos (GET por ID, GET para exportação) exigem um token JWT válido no cabeçalho `Authorization` (Bearer Token).
+Utilize o fluxo OAuth adequado (ex: Client Credentials) para gerar o token.
 
-### Como obter um Token JWT
+🛠️ Tecnologias Utilizadas
+Spring Boot – framework principal
 
-Para interagir com os endpoints protegidos, você precisará de um token JWT válido, emitido pelo Auth0. O processo geralmente envolve:
+Spring Web – criação de endpoints REST
 
-1.  **Registro/Login**: Ter uma conta configurada no Auth0.
-2.  **Obtenção do Token**: Utilizar as credenciais da sua aplicação ou de um usuário para solicitar um token JWT ao Auth0. Isso normalmente é feito através de um fluxo OAuth 2.0 (e.g., Client Credentials Grant, Authorization Code Grant, etc.), dependendo do tipo de cliente.
+Spring Data JPA – persistência com JPA
 
-### Exemplo de Requisição Autorizada
+Spring Security – autenticação e autorização
 
-```http
+Lombok – redução de boilerplate
+
+Flyway – versionamento de banco de dados
+
+MySQL – banco de dados relacional
+
+Validation – validação de dados de entrada
+
+Auth0 – autenticação com JWT
+
+DevTools – ferramentas de produtividade
+
+Maven – gerenciamento de dependências
+
+▶️ Como Executar
+1. Clone o repositório
+
+git clone https://github.com/seu-usuario/forum-api.git
+cd forum-api
+
+2. Configure o Auth0
+Crie uma aplicação em https://auth0.com/
+
+Obtenha: Domain, Audience, Client ID, Client Secret
+
+Configure no application.properties:
+auth0.audience=SEU_AUDIENCE
+auth0.issuer=https://SEU_DOMINIO.auth0.com/
+
+3. Configure o banco de dados (MySQL)
+
+spring.datasource.url=jdbc:mysql://localhost:3306/forumdb
+spring.datasource.username=root
+spring.datasource.password=senha
+spring.jpa.hibernate.ddl-auto=validate
+
+Certifique-se de que o Flyway aplicará as migrações automaticamente.
+
+4. Compile e execute
+
+mvn clean install
+mvn spring-boot:run
+
+Acesse: http://localhost:8080
+
+📚 Endpoints Detalhados
+🔸 Criar Tópico
+
 POST /topicos
-Authorization: Bearer SEU_TOKEN_JWT_AQUI
+Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-    "titulo": "Novo Tópico de Exemplo",
-    "mensagem": "Esta é uma mensagem de teste para o novo tópico.",
-    "autor": "Usuário Teste",
-    "curso": "Desenvolvimento Web"
+  "titulo": "string",
+  "mensagem": "string",
+  "autor": "string",
+  "curso": "string"
 }
 
-### Tecnologias Utilizadas
+🔸 Listar Tópicos
 
-```http
-° Spring Boot: Framework para o desenvolvimento rápido da aplicação Java.
-
-° Spring Web: Criação de aplicações web e RESTful.
-
-° Spring Data JPA: Para persistência de dados e interação com o banco de dados.
-
-° Spring Security: Framework para autenticação e autorização.
-
-° Lombok: Simplifica o desenvolvimento Java com anotações para gerar código boilerplate.
-
-° Spring Boot DevTools: Ferramentas para melhorar a produtividade durante o desenvolvimento.
-
-° Flyway Migration: Gerenciamento de versionamento de banco de dados.
-
-° MySQL Driver: Conectividade com bancos de dados MySQL.
-
-° Validation: Validação de dados de entrada.
-
-° Auth0: Plataforma de identidade para autenticação e autorização com JWT.
-
-° Maven: Ferramenta de gerenciamento de dependências.
-
-### Como Rodar o Projeto
-
-1. Clonar o Repositório:
-
-git clone [URL_DO_SEU_REPOSITORIO]
-cd nome-do-projeto
-
-2. Configurar o Auth0:
-
-Crie uma conta no Auth0 e configure uma aplicação ou API.
-
-Obtenha suas credenciais (Domain, Audience, Client ID, Client Secret, etc.).
-
-Configure as variáveis de ambiente ou o arquivo application.properties/application.yml do Spring Boot com as credenciais do Auth0.
-
-3. Configurar o Banco de Dados.
-
-### Endpoints da API
-
-```http
-Abaixo estão os detalhes de cada endpoint:
-
-Criar Tópico
-POST /topicos
-
-Cria um novo tópico. Requer autenticação.
-
-Corpo da Requisição (JSON):
-
-{
-    "titulo": "string",
-    "mensagem": "string",
-    "autor": "string",
-    "curso": "string"
-}
-
-Respostas:
-
-° 201 Created: Tópico criado com sucesso. Retorna os detalhes do tópico e o cabeçalho Location com a URI do novo recurso.
-
-° 400 Bad Request: Dados inválidos ou tópico com mesmo título/mensagem já existe.
-
-° 401 Unauthorized: Token JWT ausente ou inválido.
-
-° 403 Forbidden: Token JWT válido.
-
-Listar Tópicos
 GET /topicos
 
-Lista todos os tópicos com paginação.
+Parâmetros opcionais:
+page, size, sort
 
-Parâmetros de Query (Opcionais):
+🔸 Detalhar Tópico
 
-° page: Número da página (padrão: 0).
-
-° size: Quantidade de itens por página (padrão: 10).
-
-° sort: Campo para ordenação (ex: sort=dataCriacao,desc).
-
-Respostas:
-
-200 OK: Retorna uma lista paginada de tópicos.
-
-Detalhar Tópico
 GET /topicos/{id}
+Authorization: Bearer <token>
 
-Retorna os detalhes de um tópico específico. Requer autenticação.
+🔸 Atualizar Tópico
 
-Parâmetros de Path:
-
-° id: ID do tópico (Long).
-
-Respostas:
-
-° 200 OK: Retorna os detalhes do tópico.
-
-° 404 Not Found: Tópico não encontrado.
-
-° 401 Unauthorized: Token JWT ausente ou inválido.
-
-° 403 Forbidden: Token JWT válido, mas sem permissão.
-
-Atualizar Tópico
 PUT /topicos/{id}
+Authorization: Bearer <token>
+Content-Type: application/json
 
-Atualiza as informações de um tópico existente. Requer autenticação.
+🔸 Excluir Tópico
 
-Parâmetro de Path:
-
-° id: ID do tópico a ser atualizado (Long).
-
-Corpo da Requisição (JSON):
-
-{
-    "titulo": "string",
-    "mensagem": "string",
-    "autor": "string",
-    "curso": "string"
-}
-
-Respostas:
-
-° 200 OK: Tópico atualizado com sucesso. Retorna os detalhes do tópico.
-
-° 400 Bad Request: Dados inválidos ou ID na URL não corresponde ao ID no corpo.
-
-° 404 Not Found: Tópico não encontrado.
-
-° 401 Unauthorized: Token JWT ausente ou inválido.
-
-° 403 Forbidden: Token JWT válido, mas sem permissão.
-
-Excluir Tópico
 DELETE /topicos/{id}
+Authorization: Bearer <token>
 
-Exclui um tópico (exclusão lógica). Requer autenticação.
+✅ Respostas HTTP
+Código	Significado
+200	OK
+201	Criado
+204	Sem Conteúdo (exclusão)
+400	Requisição inválida
+401	Não autenticado (token ausente)
+403	Sem permissão (token inválido)
+404	Recurso não encontrado
 
-Parâmetro de Path:
+📄 Licença
+Este projeto está sob a licença MIT.
 
-° id: ID do tópico a ser excluído (Long).
+✉️ Contato
+Em caso de dúvidas ou sugestões, entre em contato:
 
-Respostas:
+Autor: Paulo
 
-° 204 No Content: Tópico excluído com sucesso.
-
-° 404 Not Found: Tópico não encontrado.
-
-° 401 Unauthorized: Token JWT ausente ou inválido.
-
-° 403 Forbidden: Token JWT válido, mas sem permissão.
