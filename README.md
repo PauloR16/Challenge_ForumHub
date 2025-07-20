@@ -65,7 +65,9 @@ Content-Type: application/json
     "curso": "Desenvolvimento Web"
 }
 
-Tecnologias Utilizadas
+### Tecnologias Utilizadas
+
+```http
 ° Spring Boot: Framework para o desenvolvimento rápido da aplicação Java.
 
 ° Spring Web: Criação de aplicações web e RESTful.
@@ -88,7 +90,8 @@ Tecnologias Utilizadas
 
 ° Maven: Ferramenta de gerenciamento de dependências.
 
-Como Rodar o Projeto
+### Como Rodar o Projeto
+
 1. Clonar o Repositório:
 
 git clone [URL_DO_SEU_REPOSITORIO]
@@ -104,7 +107,9 @@ Configure as variáveis de ambiente ou o arquivo application.properties/applicat
 
 3. Configurar o Banco de Dados.
 
-Endpoints da API
+### Endpoints da API
+
+```http
 Abaixo estão os detalhes de cada endpoint:
 
 Criar Tópico
