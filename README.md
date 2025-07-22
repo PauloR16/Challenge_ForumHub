@@ -13,12 +13,10 @@ Uma API RESTful para gerenciamento de tópicos em um fórum de discussão. Permi
 - `DELETE /topicos/{id}`: Exclusão lógica de um tópico.
 
 
-**Exemplo com URL:**
+**Informações:**
 
 ```bash
-curl -H "Authorization: Bearer SEU_TOKEN_JWT_AQUI" \
-     -o topicos_export.csv \
-     http://localhost:8080/topicos/exportar/csv
+
 
 🔒 Este endpoint exige autenticação via Bearer Token JWT.
 
@@ -34,7 +32,10 @@ Obtenha credenciais: Client ID, Client Secret, Domain, Audience.
 
 Utilize o fluxo OAuth adequado (ex: Client Credentials) para gerar o token.
 
+senhas salvas via Bcrypt
+
 🛠️ Tecnologias Utilizadas
+
 Spring Boot – framework principal
 
 Spring Web – criação de endpoints REST
@@ -58,6 +59,7 @@ DevTools – ferramentas de produtividade
 Maven – gerenciamento de dependências
 
 ▶️ Como Executar
+
 1. Clone o repositório
 
 git clone https://github.com/seu-usuario/forum-api.git
@@ -89,6 +91,7 @@ mvn spring-boot:run
 Acesse: http://localhost:8080
 
 📚 Endpoints Detalhados
+
 🔸 Criar Tópico
 
 POST /topicos
@@ -126,6 +129,7 @@ DELETE /topicos/{id}
 Authorization: Bearer <token>
 
 ✅ Respostas HTTP
+
 Código	Significado
 200	OK
 201	Criado
@@ -139,7 +143,7 @@ Código	Significado
 Este projeto está sob a licença MIT.
 
 ✉️ Contato
-Em caso de dúvidas ou sugestões, entre em contato:
+Em caso de dúvidas ou sugestões, entre em contato: paulobeto16@gmail.com
 
 Autor: Paulo
 
