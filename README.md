@@ -62,7 +62,7 @@ Maven – gerenciamento de dependências
 
 1. Clone o repositório
 
-git clone https://github.com/seu-usuario/forum-api.git
+git clone https://github.com/PauloR16/Challenge_ForumHub.git
 cd forum-api
 
 2. Configure o Auth0
