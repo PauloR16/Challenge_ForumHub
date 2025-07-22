@@ -12,11 +12,8 @@ Uma API RESTful para gerenciamento de tópicos em um fórum de discussão. Permi
 - `PUT /topicos/{id}`: Atualiza um tópico.
 - `DELETE /topicos/{id}`: Exclusão lógica de um tópico.
 
-### 📤 Exportação de Tópicos (CSV)
 
-- `GET /topicos/exportar/csv`: Exporta todos os tópicos para um arquivo `.csv`.
-
-**Exemplo com cURL:**
+**Exemplo com URL:**
 
 ```bash
 curl -H "Authorization: Bearer SEU_TOKEN_JWT_AQUI" \
